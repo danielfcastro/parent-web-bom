@@ -81,11 +81,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>br.com.azulseguros.parameter</groupId>
-			<artifactId>application-parameter-client</artifactId>
-			<version>${version.application-parameter}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.1-api</artifactId>
 			<scope>provided</scope>
