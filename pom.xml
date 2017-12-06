@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>parent-web-bom</artifactId>
+	<version>1.0.1</version>
+	<packaging>pom</packaging>
+	<name>parent-web-pom</name>
+	<description>Parent BOM para projetos WEB JAVA.</description>
+	<parent>
+		<groupId>br.com.danielfcastro</groupId>
+		<artifactId>parent-pom</artifactId>
+		<version>1.0</version>
+		<relativePath>../parent-pom/pom.xml</relativePath>
+	</parent>
+	<url>https://www.azulseguros.com.br</url>
+	<scm>
+		<url>http://fontes.azulseguros.com.br:7990/scm/ar/parent-web-bom.git</url>
+	</scm>
+	<developers>
+		<developer>
+			<id>arquitetura</id>
+			<name>Arquitetura - danielfcastro </name>
+			<organization>danielfcastro </organization>
+			<organizationUrl>https://www.danielfcastro.com.br</organizationUrl>
+		</developer>
+	</developers>
+	<organization>
+		<name>Daniel Ferreira Castro</name>
+		<url>https://github.com/danielfcastro</url>
+	</organization>
+	<properties>
+		<!-- dependencies -->
+		<version.wildfly-parent>10.1.0.Final</version.wildfly-parent>
+		<version.redmond>1.0.10</version.redmond>
+		<version.commons-beanutils>1.9.3</version.commons-beanutils>
+
+		<!-- tests dependencies -->
+		<version.junit>4.12</version.junit>
+
+		<!-- plugins -->
+		<version.wildfly-maven-plugin>1.1.0.Alpha11</version.wildfly-maven-plugin>
+		<version.primefaces>5.3</version.primefaces>
+	</properties>
+	<dependencyManagement>
+		<dependencies>
+			<!-- Bill of Materials do WildFly -->
+			<dependency>
+				<groupId>org.wildfly.bom</groupId>
+				<artifactId>wildfly-javaee7-with-tools</artifactId>
+				<version>${version.wildfly-parent}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${version.junit}</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jboss.spec.javax.transaction</groupId>
+			<artifactId>jboss-transaction-api_1.2_spec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.com.azulseguros.parameter</groupId>
+			<artifactId>application-parameter-client</artifactId>
+			<version>${version.application-parameter}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.spec.javax.faces</groupId>
+			<artifactId>jboss-jsf-api_2.2_spec</artifactId>
+  		</dependency>
+  		<dependency>
+			<groupId>org.jboss.spec.javax.servlet</groupId>
+			<artifactId>jboss-servlet-api_3.1_spec</artifactId>
+  		</dependency>		
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.wildfly.plugins</groupId>
+				<artifactId>wildfly-maven-plugin</artifactId>
+				<version>${version.wildfly-maven-plugin}</version>
+				<configuration>
+					<id>${wildfly-auth-id}</id>
+					<server-groups>
+						<server-group>${wildfly-group-name}</server-group>
+					</server-groups>
+
+					<hostname>${wildfly-hostname}</hostname>
+					<port>${wildfly-port}</port>
+					<runtime-name>${project.artifactId}.war</runtime-name>
+					<matchPattern>${project.artifactId}.*war</matchPattern>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${version.war.plugin}</version>
+				<configuration>
+					<archive>
+						<index>true</index>
+						<manifest>
+							<addDefaultSpecificationEntries>
+								true
+							</addDefaultSpecificationEntries>
+							<addDefaultImplementationEntries>
+								true
+							</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<Implementation-URL>${project.url}</Implementation-URL>
+							<Java-Version>${java.version}</Java-Version>
+							<Java-Vendor>${java.vendor}</Java-Vendor>
+							<Os-Name>${os.name}</Os-Name>
+							<Os-Arch>${os.arch}</Os-Arch>
+							<Os-Version>${os.version}</Os-Version>
+							<Scm-Url>${project.scm.url}</Scm-Url>
+							<Scm-Revision>${buildNumber}</Scm-Revision>
+						</manifestEntries>
+					</archive>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
